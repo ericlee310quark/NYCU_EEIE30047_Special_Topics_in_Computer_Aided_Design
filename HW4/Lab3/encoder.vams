@@ -1,0 +1,252 @@
+//Verilog-AMS HDL for "Lab3_ADC", "encoder" "verilogams"
+
+`include "constants.vams"
+`include "disciplines.vams"
+
+//4-bit ADC with Verilog-AMS
+module encoder (in16, in15, in14, in13, in12, in11, in10, in9, in8, in7, in6, in5, in4, in3, in2, out4, out3, out2, out1);
+parameter vdd = 1.0;
+input in16, in15, in14, in13, in12, in11, in10, in9, in8, in7, in6, in5, in4, in3, in2;
+output reg out4, out3, out2, out1;
+//electrical in16, in15, in14, in13, in12, in11, in10, in9, in8, in7, in6, in5, in4, in3, in2, vout4, vout3, vout2, vout1;
+//ddiscrete out4, out3, out2, out1;
+
+wire [14:0] input_arr;
+assign input_arr = {in16, in15, in14, in13, in12, in11, in10, in9, in8, in7, in6, in5, in4, in3, in2};
+
+
+
+
+always@(input_arr)begin
+	casex(input_arr)
+		15'b1xx_xxxx_xxxx_xxxx:begin //15
+			out1 = 1'b1;
+			out2 = 1'b1;
+			out3 = 1'b1;
+			out4 = 1'b1;
+		end
+		15'b01x_xxxx_xxxx_xxxx:begin //14
+			out1 = 1'b0;
+			out2 = 1'b1;
+			out3 = 1'b1;
+			out4 = 1'b1;
+		end
+		15'b001_xxxx_xxxx_xxxx:begin //13
+			out1 = 1'b1;
+			out2 = 1'b0;
+			out3 = 1'b1;
+			out4 = 1'b1;
+		end
+		15'b000_1xxx_xxxx_xxxx:begin //12
+			out1 = 1'b0;
+			out2 = 1'b0;
+			out3 = 1'b1;
+			out4 = 1'b1;
+		end
+		15'b000_01xx_xxxx_xxxx:begin  //11
+			out1 = 1'b1;
+			out2 = 1'b1;
+			out3 = 1'b0;
+			out4 = 1'b1;
+		end
+		15'b000_001x_xxxx_xxxx:begin //10
+			out1 = 1'b0;
+			out2 = 1'b1;
+			out3 = 1'b0;
+			out4 = 1'b1;
+		end
+		15'b000_0001_xxxx_xxxx:begin //9
+			out1 = 1'b1;
+			out2 = 1'b0;
+			out3 = 1'b0;
+			out4 = 1'b1;
+		end
+		15'b000_0000_1xxx_xxxx:begin  //8
+			out1 = 1'b0;
+			out2 = 1'b0;
+			out3 = 1'b0;
+			out4 = 1'b1;
+		end
+		15'b000_0000_01xx_xxxx:begin //7
+			out1 = 1'b1;
+			out2 = 1'b1;
+			out3 = 1'b1;
+			out4 = 1'b0;
+		end
+		15'b000_0000_001x_xxxx:begin  //6
+			out1 = 1'b0;
+			out2 = 1'b1;
+			out3 = 1'b1;
+			out4 = 1'b0;
+		end
+		15'b000_0000_0001_xxxx:begin  //5
+			out1 = 1'b1;
+			out2 = 1'b0;
+			out3 = 1'b1;
+			out4 = 1'b0;
+		end
+		15'b000_0000_0000_1xxx:begin  //4
+			out1 = 1'b0;
+			out2 = 1'b0;
+			out3 = 1'b1;
+			out4 = 1'b0;
+		end
+		15'b000_0000_0000_01xx:begin  //3
+			out1 = 1'b1;
+			out2 = 1'b1;
+			out3 = 1'b0;
+			out4 = 1'b0;
+		end
+		15'b000_0000_0000_001x:begin  //2
+			out1 = 1'b0;
+			out2 = 1'b1;
+			out3 = 1'b0;
+			out4 = 1'b0;
+		end
+		15'b000_0000_0000_0001:begin  //1
+			out1 = 1'b1;
+			out2 = 1'b0;
+			out3 = 1'b0;
+			out4 = 1'b0;
+		end		
+		15'b000_0000_0000_0000:begin
+			out1 = 1'b0;
+			out2 = 1'b0;
+			out3 = 1'b0;
+			out4 = 1'b0;
+		end
+		default: begin
+			out1 = 1'b0;
+			out2 = 1'b0;
+			out3 = 1'b0;
+			out4 = 1'b0;
+		end
+
+
+
+
+
+	endcase
+
+end
+
+/*
+analog begin
+    V(vout4) <+ 0;
+	V(vout3) <+ 0;	
+    V(vout2) <+ 0;
+	V(vout1) <+ 0;
+
+    if(V(in16)==1&&V(in15)==1&&V(in14)==1&&V(in13)==1&&V(in12)==1&&V(in11)==1&&V(in10)==1&&V(in9)==1&&V(in8)==1&&V(in7)==1&&V(in6)==1&&V(in5)==1&&V(in4)==1&&V(in3)==1&&(V(in2)==1))begin
+        V(vout4) <+ 1;
+        V(vout3) <+ 1;	
+        V(vout2) <+ 1;
+        V(vout1) <+ 1;
+    end
+    else if(V(in15)==1&&V(in14)==1&&V(in13)==1&&V(in12)==1&&V(in11)==1&&V(in10)==1&&V(in9)==1&&V(in8)==1&&V(in7)==1&&V(in6)==1&&V(in5)==1&&V(in4)==1&&V(in3)==1&&(V(in2)==1))begin
+        V(vout4) <+ 1;
+        V(vout3) <+ 1;	
+        V(vout2) <+ 1;
+        //V(vout1) <+ 0;
+    end
+    else if(V(in14)==1&&V(in13)==1&&V(in12)==1&&V(in11)==1&&V(in10)==1&&V(in9)==1&&V(in8)==1&&V(in7)==1&&V(in6)==1&&V(in5)==1&&V(in4)==1&&V(in3)==1&&(V(in2)==1))begin
+        V(vout4) <+ 1;
+        V(vout3) <+ 1;	
+        //V(vout2) <+ 0;
+        V(vout1) <+ 1;
+    end
+    else if(V(in13)==1&&V(in12)==1&&V(in11)==1&&V(in10)==1&&V(in9)==1&&V(in8)==1&&V(in7)==1&&V(in6)==1&&V(in5)==1&&V(in4)==1&&V(in3)==1&&(V(in2)==1))begin
+        V(vout4) <+ 1;
+        V(vout3) <+ 1;	
+       // V(vout2) <+ 0;
+       // V(vout1) <+ 0;
+    end
+    else if(V(in12)==1&&V(in11)==1&&V(in10)==1&&V(in9)==1&&V(in8)==1&&V(in7)==1&&V(in6)==1&&V(in5)==1&&V(in4)==1&&V(in3)==1&&(V(in2)==1))begin
+        V(vout4) <+ 1;
+        //V(vout3) <+ 0;	
+        V(vout2) <+ 1;
+        V(vout1) <+ 1;
+    end
+    else if(V(in11)==1&&V(in10)==1&&V(in9)==1&&V(in8)==1&&V(in7)==1&&V(in6)==1&&V(in5)==1&&V(in4)==1&&V(in3)==1&&(V(in2)==1))begin
+        V(vout4) <+ 1;
+       // V(vout3) <+ 0;	
+        V(vout2) <+ 1;
+       // V(vout1) <+ 0;
+    end
+    else if(V(in10)==1&&V(in9)==1&&V(in8)==1&&V(in7)==1&&V(in6)==1&&V(in5)==1&&V(in4)==1&&V(in3)==1&&(V(in2)==1))begin
+        V(vout4) <+ 1;
+       // V(vout3) <+ 0;	
+        //V(vout2) <+ 0;
+        V(vout1) <+ 1;
+    end
+    else if(V(in9)==1&&V(in8)==1&&V(in7)==1&&V(in6)==1&&V(in5)==1&&V(in4)==1&&V(in3)==1&&(V(in2)==1))begin
+        V(vout4) <+ 1;
+       // V(vout3) <+ 0;	
+      //  V(vout2) <+ 0;
+       // V(vout1) <+ 0;
+    end
+    else if(V(in8)==1&&V(in7)==1&&V(in6)==1&&V(in5)==1&&V(in4)==1&&V(in3)==1&&(V(in2)==1))begin
+      //  V(vout4) <+ 0;
+        V(vout3) <+ 1;	
+        V(vout2) <+ 1;
+        V(vout1) <+ 1;
+    end
+    else if(V(in7)==1&&V(in6)==1&&V(in5)==1&&V(in4)==1&&V(in3)==1&&(V(in2)==1))begin
+      //  V(vout4) <+ 0;
+        V(vout3) <+ 1;	
+        V(vout2) <+ 1;
+      //  V(vout1) <+ 0;
+    end
+    else if(V(in6)==1&&V(in5)==1&&V(in4)==1&&V(in3)==1&&(V(in2)==1))begin
+      //  V(vout4) <+ 0;
+        V(vout3) <+ 1;	
+      //  V(vout2) <+ 0;
+        V(vout1) <+ 1;
+    end
+    else if(V(in5)==1&&V(in4)==1&&V(in3)==1&&(V(in2)==1))begin
+      //  V(vout4) <+ 0;
+        V(vout3) <+ 1;	
+      //  V(vout2) <+ 0;
+     //   V(vout1) <+ 0;
+    end
+    else if(V(in4)==1&&V(in3)==1&&(V(in2)==1))begin
+     //   V(vout4) <+ 0;
+      //  V(vout3) <+ 0;	
+        V(vout2) <+ 1;
+        V(vout1) <+ 1;
+    end
+
+    else if(V(in3)==1&&(V(in2)==1))begin
+     //   V(vout4) <+ 0;
+    //    V(vout3) <+ 0;	
+        V(vout2) <+ 1;
+    //    V(vout1) <+ 0;
+    end
+    else if(V(in2)==1)begin
+    //    V(vout4) <+ 0;
+    //    V(vout3) <+ 0;	
+    //    V(vout2) <+ 0;
+        V(vout1) <+ 1;
+    end
+
+
+
+
+
+end
+
+//connectmodule
+always begin @ (cross(V(vout4) - vdd / 2, +1,0.01n)) out4 = 1; end
+always begin @ (cross(V(vout4) - vdd / 2, -1,0.01n)) out4 = 0; end
+always begin @ (cross(V(vout3) - vdd / 2, +1,0.01n)) out3 = 1; end
+always begin @ (cross(V(vout3) - vdd / 2, -1,0.01n)) out3 = 0; end
+always begin @ (cross(V(vout2) - vdd / 2, +1,0.01n)) out2 = 1; end
+always begin @ (cross(V(vout2) - vdd / 2, -1,0.01n)) out2 = 0; end
+always begin @ (cross(V(vout1) - vdd / 2, +1,0.01n)) out1 = 1; end
+always begin @ (cross(V(vout1) - vdd / 2, -1,0.01n)) out1 = 0; end
+
+*/
+
+
+endmodule
+

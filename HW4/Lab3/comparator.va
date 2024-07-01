@@ -1,0 +1,26 @@
+// VerilogA for Lab3_ADC, comparator, veriloga
+
+`include "constants.vams"
+`include "disciplines.vams"
+
+module comparator(vin, vref, vout);
+
+input vin, vref;
+output vout;
+voltage vin, vref, vout;
+real vtmp;
+
+
+analog begin
+//	V(vout) <+ ((V(vin) >= V(vref)) ? 1 : 0);
+   
+	@(cross(V(vin) - V(vref), +1)) begin
+		vtmp = 1.8;
+	end
+	@(cross(V(vin) - V(vref), -1)) begin
+		vtmp = 0.0;
+	end
+	V(vout) <+ transition(vtmp, 1p, 1p, 1p); //tdelay, tr_dn, tf_dn
+end
+
+endmodule
